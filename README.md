@@ -71,7 +71,7 @@ The simulation evaluates performance using:
 
 ---
 
-## Results & Observations
+## Write-up
 
 - **SJF** performed best in CPU-bound scenarios because it prioritizes shorter jobs.
 - **Round Robin** provided better fairness, especially in mixed workloads.
