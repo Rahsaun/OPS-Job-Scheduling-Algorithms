@@ -8,17 +8,37 @@ The simulation includes both CPU-bound and I/O-bound processes, along with reali
 ---
 
 ## How to Run
+1. Make sure you have all 3 files downloaded onto your device ( simulation.py, scenarios.py, run_experiments.py)
+2. Run the simulation:
+   run_experiments.py
 
-1. Clone the repository:
-   git clone https://github.com/Rahsaun/-OPS-Job-Scheduling-Algorithms.git
+   The output should look something like this 
 
-2. Navigate into the project folder:
-   cd -OPS-Job-Scheduling-Algorithms
+   --- Scenario 1 ---
 
-3. Run the simulation:
-   python run_experiments.py
+   FCFS: {'avg_wait': 147.8}
+ 
+   SJF: {'avg_wait': 85.8}
+ 
+   RR: {'avg_wait': 153.6}
 
----
+   --- Scenario 2 ---
+
+   FCFS: {'avg_wait': 12.4}
+
+   SJF: {'avg_wait': 15.4}
+
+   RR: {'avg_wait': 18.8}
+
+   --- Scenario 3 ---
+
+   FCFS: {'avg_wait': 122.33333333333333}
+
+   SJF: {'avg_wait': 55.0}
+
+   RR: {'avg_wait': 79.33333333333333}
+
+   ---
 
 ## Project Structure
 
@@ -58,7 +78,7 @@ The simulation includes both CPU-bound and I/O-bound processes, along with reali
    Processes frequently perform I/O and have short CPU bursts.
 
 3. **Mixed Scenario**  
-   Combination of both CPU-bound and I/O-bound processes.
+   A combination of both CPU-bound and I/O-bound processes.
 
 ---
 
