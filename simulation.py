@@ -9,37 +9,41 @@ class Process:
         self.pid = pid
         self.bursts = bursts  # [(cpu, io), ...]
         self.current_burst = 0
-        self.remaining_cpu = bursts[0][0]
+
+        self.remaining_cpu = bursts[0][0] if bursts else 0
         self.state = "READY"
 
         self.wait_time = 0
         self.turnaround_time = 0
         self.response_time = None
 
-        # NEW: track arrival time
         self.arrival_time = 0
         self.completion_time = None
 
     def is_done(self):
         return self.current_burst >= len(self.bursts)
 
+
 # -----------------------------
-# Workload Generator
+# Workload Generator (OPTION 2)
 # -----------------------------
 def generate_process(pid, cpu_bound=True):
-    bursts = []
     num_bursts = random.randint(3, 6)
+
+    bursts = []
 
     for _ in range(num_bursts):
         if cpu_bound:
-            cpu = random.randint(6, 12)
-            io = random.randint(1, 3)
+            cpu_time = random.randint(6, 12)
+            io_time = random.randint(1, 3)
         else:
-            cpu = random.randint(1, 4)
-            io = random.randint(5, 10)
-        bursts.append((cpu, io))
+            cpu_time = random.randint(1, 4)
+            io_time = random.randint(5, 10)
+
+        bursts.append((cpu_time, io_time))
 
     return Process(pid, bursts)
+
 
 # -----------------------------
 # Scheduling Algorithms
@@ -47,13 +51,16 @@ def generate_process(pid, cpu_bound=True):
 def fcfs(ready_queue):
     return ready_queue[0]
 
+
 def sjf(ready_queue):
     return min(ready_queue, key=lambda p: p.remaining_cpu)
+
 
 # -----------------------------
 # Simulation Engine
 # -----------------------------
 def simulate(processes, scheduler="FCFS", quantum=4, max_time=1000):
+
     time = 0
     ready_queue = deque(processes)
     io_wait = []
@@ -61,17 +68,17 @@ def simulate(processes, scheduler="FCFS", quantum=4, max_time=1000):
     time_slice = 0
     completed = []
 
-    # set arrival time
     for p in processes:
         p.arrival_time = 0
 
     while time < max_time and len(completed) < len(processes):
 
         # -----------------------------
-        # Handle I/O completion
+        # I/O handling
         # -----------------------------
         for p in io_wait[:]:
             p.remaining_cpu -= 1
+
             if p.remaining_cpu <= 0:
                 io_wait.remove(p)
                 p.current_burst += 1
@@ -86,9 +93,9 @@ def simulate(processes, scheduler="FCFS", quantum=4, max_time=1000):
                     completed.append(p)
 
         # -----------------------------
-        # Select process
+        # Pick process
         # -----------------------------
-        if not current and ready_queue:
+        if current is None and ready_queue:
             if scheduler == "FCFS":
                 current = fcfs(ready_queue)
             elif scheduler == "SJF":
@@ -105,7 +112,7 @@ def simulate(processes, scheduler="FCFS", quantum=4, max_time=1000):
             time_slice = 0
 
         # -----------------------------
-        # Execute process
+        # Execute
         # -----------------------------
         if current:
             current.remaining_cpu -= 1
@@ -113,10 +120,18 @@ def simulate(processes, scheduler="FCFS", quantum=4, max_time=1000):
 
             if current.remaining_cpu <= 0:
                 cpu, io = current.bursts[current.current_burst]
-                current.remaining_cpu = io
-                current.state = "WAITING"
-                io_wait.append(current)
-                current = None
+                current.current_burst += 1
+
+                if current.is_done():
+                    current.state = "TERMINATED"
+                    current.completion_time = time
+                    completed.append(current)
+                    current = None
+                else:
+                    current.remaining_cpu = io
+                    current.state = "WAITING"
+                    io_wait.append(current)
+                    current = None
 
             elif scheduler == "RR" and time_slice >= quantum:
                 current.state = "READY"
@@ -124,7 +139,7 @@ def simulate(processes, scheduler="FCFS", quantum=4, max_time=1000):
                 current = None
 
         # -----------------------------
-        # Update waiting time
+        # Waiting time update
         # -----------------------------
         for p in ready_queue:
             p.wait_time += 1
@@ -152,7 +167,6 @@ def simulate(processes, scheduler="FCFS", quantum=4, max_time=1000):
 
     avg_turnaround = total_turnaround / len(processes)
 
-    # Lifespan Ratio (what your professor wants)
     lifespan_ratio = total_turnaround / total_cpu_time
 
     return {
