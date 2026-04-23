@@ -12,33 +12,13 @@ The simulation includes both CPU-bound and I/O-bound processes, along with reali
 2. Run the simulation:
    run_experiments.py
 
-   The output should look something like this 
+         The output should look something like this 
 
-   --- Scenario 1 ---
-
-   FCFS: {'avg_wait': 147.8}
- 
-   SJF: {'avg_wait': 85.8}
- 
-   RR: {'avg_wait': 153.6}
-
-   --- Scenario 2 ---
-
-   FCFS: {'avg_wait': 12.4}
-
-   SJF: {'avg_wait': 15.4}
-
-   RR: {'avg_wait': 18.8}
-
-   --- Scenario 3 ---
-
-   FCFS: {'avg_wait': 122.30}
-
-   SJF: {'avg_wait': 55.0}
-
-   RR: {'avg_wait': 79.30}
-
-   ---
+         FCFS: {'avg_wait': 18.4, 'avg_turnaround': 52.1, 'lifespan_ratio': 2.31}
+  
+         SJF: {'avg_wait': 12.6, 'avg_turnaround': 41.7, 'lifespan_ratio': 1.89}
+  
+         RR:  {'avg_wait': 15.2, 'avg_turnaround': 46.3, 'lifespan_ratio': 2.05}
 
 ## Project Structure
 
