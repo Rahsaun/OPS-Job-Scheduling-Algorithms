@@ -32,11 +32,11 @@ The simulation includes both CPU-bound and I/O-bound processes, along with reali
 
    --- Scenario 3 ---
 
-   FCFS: {'avg_wait': 122.33333333333333}
+   FCFS: {'avg_wait': 122.30}
 
    SJF: {'avg_wait': 55.0}
 
-   RR: {'avg_wait': 79.33333333333333}
+   RR: {'avg_wait': 79.30}
 
    ---
 
@@ -93,9 +93,9 @@ The simulation evaluates performance using:
 
 ## Write-up
 
-- **SJF** performed best in CPU-bound scenarios because it prioritizes shorter jobs.
-- **Round Robin** provided better fairness, especially in mixed workloads.
-- **FCFS** was the simplest but often performed the worst due to long waiting times.
+- **SJF** worked best when most processes were CPU-bound because it runs shorter tasks first, which reduces overall                  waiting time.
+- **Round Robin** worked better in mixed workloads because it gives each process a turn using the CPU, so no single                          process has to wait too long before getting time to run.
+- **FCFS** was the easiest to understand, but it often performed the worst because long processes can hold the CPU for a              long time, making other processes wait.
 
 ---
 
